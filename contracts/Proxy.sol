@@ -8,13 +8,18 @@ contract Proxy {
         implementation = _implementation;
     }
 
+    function update2x() external {
+        Logic1(implementation).update2x();
+    }
+
     fallback() external {
-        implementation.call(msg.data);
+        (bool success, ) = implementation.call(msg.data);
+        require(success);
     }
 }
 
 contract Logic1 {
-    uint public x;
+    uint public x = 1;
 
     function update2x() external {
         x *= 2;
@@ -26,7 +31,7 @@ contract Logic1 {
 }
 
 contract Logic2 {
-    uint public x;
+    uint public x = 1;
 
     function update2x() external {
         x *= 2;
