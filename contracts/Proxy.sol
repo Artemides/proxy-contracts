@@ -14,8 +14,8 @@ contract Proxy {
     }
 
     fallback() external {
-        (bool success, ) = implementation.call(msg.data);
-        // (bool success, ) = implementation.delegatecall(msg.data);
+        // (bool success, ) = implementation.call(msg.data);
+        (bool success, ) = implementation.delegatecall(msg.data);
 
         require(success);
     }
