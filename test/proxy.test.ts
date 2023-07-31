@@ -10,7 +10,9 @@ import { assert } from "chai";
       let proxy: Proxy;
       let logic1: Logic1;
       let logic2: Logic2;
-      let proxyWithLogic1;
+      let proxyWithLogic1: Proxy & Logic1;
+      let proxyWithLogic2: Proxy & Logic2;
+
       beforeEach(async () => {
         deployer = (await getNamedAccounts()).deployer;
         await deployments.fixture(["all"]);
@@ -18,8 +20,9 @@ import { assert } from "chai";
         logic1 = await ethers.getContract("Logic1", deployer);
         logic2 = await ethers.getContract("Logic2", deployer);
         const proxyAddress = await proxy.getAddress();
-
-        proxyWithLogic1 = await ethers.getContractAt("Logic1", proxyAddress);
+        const logic1Address = await logic1.getAddress();
+        proxyWithLogic1 = logic1.attach(proxyAddress) as Proxy & Logic1;
+        proxyWithLogic2 = logic2.attach(proxyAddress) as Proxy & Logic2;
       });
 
       describe("Logic 1 implementation", () => {
@@ -46,12 +49,18 @@ import { assert } from "chai";
 
       describe("Call Logic1 via fallback", () => {
         it("updates x in 3 units", async () => {
-          await proxyWithLogic1.changeImplementation(await logic1.getAddress());
+          await proxy.changeImplementation(await logic1.getAddress());
           await proxyWithLogic1.update3x();
 
           const x = await logic1.x();
           assert.equal(x, BigInt(3));
         });
-        it("starts the Logic 1 implementation", async () => {});
+        it("updates x in 5 units", async () => {
+          await proxy.changeImplementation(await logic2.getAddress());
+          await proxyWithLogic2.update5x();
+          const x = await logic2.x();
+
+          assert.equal(x, BigInt(5));
+        });
       });
     });
