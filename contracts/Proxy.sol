@@ -1,21 +1,19 @@
 // SPDX-License-Identifier: SEE LICENSE IN LICENSE
 pragma solidity ^0.8.17;
+import "@openzeppelin/contracts/utils/StorageSlot.sol";
 
 contract Proxy {
     uint256 x = 1;
-    address implementation;
 
     function changeImplementation(address _implementation) external {
-        implementation = _implementation;
-    }
-
-    function update2x() external {
-        Logic1(implementation).update2x();
+        StorageSlot.getAddressSlot(keccak256("impl")).value = _implementation;
     }
 
     fallback() external {
-        // (bool success, ) = implementation.call(msg.data);
-        (bool success, ) = implementation.delegatecall(msg.data);
+        (bool success, ) = StorageSlot
+            .getAddressSlot(keccak256("impl"))
+            .value
+            .delegatecall(msg.data);
 
         require(success);
     }
