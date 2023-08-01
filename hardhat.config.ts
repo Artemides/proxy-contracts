@@ -3,7 +3,6 @@ import "@nomicfoundation/hardhat-toolbox";
 import "dotenv/config";
 import "@nomiclabs/hardhat-ethers";
 import "@openzeppelin/hardhat-upgrades";
-import "ethe";
 import "hardhat-deploy";
 
 const ETHERSCAN = process.env.ETHERSCAN_API_KEY || "";
