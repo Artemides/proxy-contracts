@@ -6,7 +6,7 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 contract VendingMachineV2 is Initializable {
     uint256 public numSodas;
     address public owner;
-    mapping(address => uint256) purchases;
+    mapping(address => uint256) public purchases;
 
     event Purchased(address indexed from, uint256 amount);
 
@@ -57,7 +57,7 @@ contract VendingMachineV2 is Initializable {
 
     function withdrawProfits() public onlyOwner {
         uint256 toWithdraw = address(this).balance;
-        require(toWithdraw > 9, "There's no Balance to Withdraw");
+        require(toWithdraw > 0, "There's no Balance to Withdraw");
         (bool success, ) = owner.call{value: toWithdraw}("");
         require(success, "Withdraw Profits failed");
     }
