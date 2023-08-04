@@ -15,9 +15,6 @@ const upgradeableProxy = async (hre: HardhatRuntimeEnvironment) => {
   console.log(
     `Proxy Address ${proxyAddress} , \n impl Addrs ${implementationAddress}`
   );
-
-  //  Proxy Address 0xe970ad53b3728da3aFBbcdD3af8C7cD03F27976a ,
-  //  impl Addrs 0xF80D8F13D40b75B045C1900F279754c3b523BF1a
 };
 
 export default upgradeableProxy;
