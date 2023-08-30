@@ -31,6 +31,7 @@ import { Address } from "hardhat-deploy/dist/types";
       describe("Logic 1 implementation", () => {
         it("Changes its implementation to Logic1", async () => {
           await proxy.changeImplementation(await logic1.getAddress());
+          await proxy.update2x();
 
           const x = await logic1.x();
           assert.equal(x, BigInt(2));
@@ -41,6 +42,7 @@ import { Address } from "hardhat-deploy/dist/types";
       describe("Logic 2 implementation", () => {
         it("Changes its implementation to Logic1", async () => {
           await proxy.changeImplementation(await logic2.getAddress());
+          await proxy.update2x();
 
           const x = await logic2.x();
           assert.equal(x, BigInt(2));
