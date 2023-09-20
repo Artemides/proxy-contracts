@@ -20,7 +20,7 @@ const config: HardhatUserConfig = {
   namedAccounts: {
     deployer: {
       default: 0,
-      31338: 9,
+      31337: 9,
     },
   },
   etherscan: {
